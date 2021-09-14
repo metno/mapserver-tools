@@ -56,7 +56,6 @@ def read_yaml_config_file(yaml_config_file, debug=False):
 
 
 def get_geotiff_timestamp(geotiff_file):
-    print(os.getcwd())
     dataset = rasterio.open(geotiff_file)
     tags = dataset.tags()
     return dataset.profile['width'], dataset.profile['height'], datetime.datetime.strptime(tags['TIFFTAG_DATETIME'],
@@ -92,14 +91,15 @@ def generate_render_data(server_name, mapserver_data_dir, map_output_file, input
     return data
 
 
-def open_mmd_xml_file(input_mmd_xml_file):
+def open_mmd_xml_file(input_mmd_xml_file, ns):
+    xtree = None
     et.register_namespace('mmd', ns['mmd'])
     et.register_namespace('gml', ns['gml'])
     try:
         xtree = et.parse(input_mmd_xml_file)
     except FileNotFoundError:
         print("Could not find the mmd xml input file. Please check you command line argument.")
-        sys.exit(1)
+        # sys.exit(1)
 
     return xtree
 
@@ -203,7 +203,7 @@ if __name__ == "__main__":
     ns = {'mmd': 'http://www.met.no/schema/mmd',
           'gml': 'http://www.opengis.net/gml'}
 
-    xtree = open_mmd_xml_file(cmd_args.input_mmd_xml_file)
+    xtree = open_mmd_xml_file(cmd_args.input_mmd_xml_file, ns)
     xroot = xtree.getroot()
     remove_wms_from_mmd_xml(xroot, ns)
 
