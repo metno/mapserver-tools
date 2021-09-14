@@ -120,7 +120,7 @@ def get_metadata_indentifier_from_mmd_xml(xroot, ns, mi=None):
     return metadata_identifier.text
 
 
-def add_wms_to_mmd_xml(xroot, server_name, mapserver_data_dir, map_output_file, input_data_files):
+def add_wms_to_mmd_xml(xroot, server_name, mapserver_data_dir, map_output_file, input_data_files, config):
     wms_data_access = et.SubElement(xroot, "mmd:data_access")
     wms_data_access_type = et.SubElement(wms_data_access, "mmd:type")
     wms_data_access_type.text = "OGC WMS"
@@ -215,7 +215,7 @@ if __name__ == "__main__":
     map_output_file = 'mapserver-{}-{}.map'.format(mi, geotiff_timestamp.strftime('%Y%m%dT%H%M%SZ'))
 
     add_wms_to_mmd_xml(xroot, cmd_args.server_name, cmd_args.mapserver_data_dir,
-                       map_output_file, cmd_args.input_data_files)
+                       map_output_file, cmd_args.input_data_files, config)
     rewrite_mmd_xml(xtree, cmd_args.input_mmd_xml_file)
 
     data = generate_render_data(cmd_args.server_name, cmd_args.mapserver_data_dir,

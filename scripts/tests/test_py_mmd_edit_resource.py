@@ -71,3 +71,87 @@ def test_open_mmd_xml_file_fnf(capsys, mocker):
     pmer.open_mmd_xml_file(input_mmd_xml_file, ns)
     captured = capsys.readouterr()
     assert 'Could not find the mmd xml input file. Please check you command line argument.' in captured.out
+    capsys.disabled()
+
+
+def test_get_metadata_indentifier_from_mmd_xml():
+    import sys
+    from importlib import import_module
+
+    sys.path.append('./scripts')
+    pmer = import_module('py-mmd-edit-resource')
+
+    ns = {'mmd': 'http://www.met.no/schema/mmd',
+          'gml': 'http://www.opengis.net/gml'}
+
+    input_mmd_xml_file = 'scripts/tests/testdata/noaa19-avhrr-20210901070230-20210901071648.xml'
+    xtree = pmer.open_mmd_xml_file(input_mmd_xml_file, ns)
+
+    mi = pmer.get_metadata_indentifier_from_mmd_xml(xtree, ns)
+    assert mi == '4f0946c4-3a0b-42b8-9094-69287d16fa64'
+
+    mi = '8505ad3e-f9e3-4de3-a080-8253443ac954'
+    mi_reset = pmer.get_metadata_indentifier_from_mmd_xml(xtree, ns, mi)
+    assert mi_reset == mi
+
+
+def test_remove_wms_from_mmd_xml():
+    import sys
+    from importlib import import_module
+
+    sys.path.append('./scripts')
+    pmer = import_module('py-mmd-edit-resource')
+
+    ns = {'mmd': 'http://www.met.no/schema/mmd',
+          'gml': 'http://www.opengis.net/gml'}
+
+    input_mmd_xml_file = 'scripts/tests/testdata/noaa19-avhrr-20210901070230-20210901071648.xml'
+    xroot = pmer.open_mmd_xml_file(input_mmd_xml_file, ns)
+    xtree = xroot.getroot()
+    pmer.remove_wms_from_mmd_xml(xtree, ns)
+    for data_access in xroot.findall("mmd:data_access", ns):
+        access_type = data_access.find("mmd:type", ns)
+        assert access_type.text != 'OGC WMS'
+
+
+def test_add_wms_to_mmd_xml():
+    import sys
+    from importlib import import_module
+
+    sys.path.append('./scripts')
+    pmer = import_module('py-mmd-edit-resource')
+
+    config = {'layers': [{'match': 'overview',
+                          'name': 'Overview',
+                          'title': 'Overview'},
+                         {'match': 'natural_with_night_fog',
+                          'name': 'natural_with_night_fog',
+                          'title': 'Natural with night fog'}]}
+    server_name = 'https://test.server.lo/'
+    mapserver_data_dir = 'test_mapserver_data_dir'
+    map_output_file = 'test_map_output_file'
+    input_data_files = ['scripts/testdata/overview_20210910_123318.tif',
+                        'scripts/testdata/natural_with_night_fog_20210910_123318.tif']
+
+    ns = {'mmd': 'http://www.met.no/schema/mmd',
+          'gml': 'http://www.opengis.net/gml'}
+
+    input_mmd_xml_file = 'scripts/tests/testdata/noaa19-avhrr-20210901070230-20210901071648.xml'
+    xtree = pmer.open_mmd_xml_file(input_mmd_xml_file, ns)
+    xroot = xtree.getroot()
+    pmer.remove_wms_from_mmd_xml(xroot, ns)
+    pmer.add_wms_to_mmd_xml(xroot, server_name, mapserver_data_dir,
+                            map_output_file, input_data_files, config)
+    pmer.rewrite_mmd_xml(xtree, 'test-out.xml')
+
+    xtree = pmer.open_mmd_xml_file('test-out.xml', ns)
+    xroot = xtree.getroot()
+    for data_access in xroot.findall("mmd:data_access", ns):
+        access_type = data_access.find("mmd:type", ns)
+        if access_type.text == 'OGC WMS':
+            wms_data_access_description = data_access.find("mmd:description", ns)
+            assert wms_data_access_description.text == "OGC Web Mapping Service, URI to GetCapabilities Document."
+            wms_data_access_resource = data_access.find("mmd:resource", ns)
+            s = ('https://test.server.lo//cgi-bin/mapserv?map=test_mapserver_data_dir/mapserver/map-files/'
+                 'test_map_output_file&service=WMS&amp;version=1.3.0&amp;request=GetCapabilities')
+            assert wms_data_access_resource.text == s
