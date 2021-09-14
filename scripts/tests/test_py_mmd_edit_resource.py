@@ -5,6 +5,36 @@ import pytest
 import logging
 
 
+def test_check_arguments():
+    import sys
+    from importlib import import_module
+
+    sys.path.append('./scripts')
+    pmer = import_module('py-mmd-edit-resource')
+    cmd_args = None
+    assert pmer.check_arguments(cmd_args) is True
+
+
+def test_read_yaml_config_file():
+    import sys
+    from importlib import import_module
+
+    config = {'layers': [{'match': 'overview',
+                          'name': 'Overview',
+                          'title': 'Overview'},
+                         {'match': 'natural_with_night_fog',
+                          'name': 'natural_with_night_fog',
+                          'title': 'Natural with night fog'}]}
+
+    sys.path.append('./scripts')
+    pmer = import_module('py-mmd-edit-resource')
+    yaml_config_file = 'etc/okd-satellite-layer-metadata.yaml'
+    read_config = pmer.read_yaml_config_file(yaml_config_file)
+    assert read_config == config
+    read_config_debug = pmer.read_yaml_config_file(yaml_config_file, True)
+    assert read_config_debug == config
+
+
 def test_generate_render_data():
     """Test check if distribute."""
     import os

@@ -1,0 +1,8 @@
+---
+layers:
+  - match: overview
+    name: 'Overview'
+    title: 'Overview'
+  - match: natural_with_night_fog
+    name: natural_with_night_fog
+    title: 'Natural with night fog'
