@@ -1,0 +1,95 @@
+---
+stages:
+  - test
+
+test:pylint:35:
+  stage: test
+  tags:
+    - k8s-unpriv
+  image: python:3.5
+  script:
+    - pip install pylint --quiet
+    - pylint --ignored-classes=_socketobject *.py
+
+test:pytest:35:
+  stage: test
+  tags:
+    - k8s-unpriv
+  image: python:3.5
+  script:
+    - pip install coverage pytest pytest-cov pytest-mock pyyaml --quiet
+    - pytest --cov
+    - coverage report -m
+    - coverage xml -o cobertura.xml
+  coverage: '/TOTAL.+ ([0-9]{1,3}%)/'
+  artifacts:
+      reports:
+        cobertura: cobertura.xml
+  
+test:pylint:37:
+  stage: test
+  tags:
+    - k8s-unpriv
+  image: python:3.7
+  script:
+    - pip install pylint --quiet
+    - pylint --ignored-classes=_socketobject *.py
+
+test:pytest:37:
+  stage: test
+  tags:
+    - k8s-unpriv
+  image: python:3.7
+  script:
+    - pip install coverage pytest pytest-cov pytest-mock pyyaml --quiet
+    - pytest --cov
+    - coverage report -m
+    - coverage xml -o cobertura.xml
+  coverage: '/TOTAL.+ ([0-9]{1,3}%)/'
+  artifacts:
+      reports:
+        cobertura: cobertura.xml
+test:pylint:38:
+  stage: test
+  tags:
+    - k8s-unpriv
+  image: python:3.8
+  script:
+    - pip install pylint --quiet
+    - pylint --ignored-classes=_socketobject *.py
+test:pytest:38:
+  stage: test
+  tags:
+    - k8s-unpriv
+  image: python:3.8
+  script:
+    - pip install coverage pytest pytest-cov pytest-mock pyyaml --quiet
+    - pytest --cov
+    - coverage report -m
+    - coverage xml -o cobertura.xml
+  coverage: '/TOTAL.+ ([0-9]{1,3}%)/'
+  artifacts:
+      reports:
+        cobertura: cobertura.xml
+test:pylint:39:
+  stage: test
+  tags:
+    - k8s-unpriv
+  image: python:3.9
+  script:
+    - pip install pylint --quiet
+    - pylint --ignored-classes=_socketobject *.py
+test:pytest:39:
+  stage: test
+  tags:
+    - k8s-unpriv
+  image: python:3.9
+  script:
+    - pip install coverage pytest pytest-cov pytest-mock pyyaml --quiet
+    - pytest --cov
+    - coverage report -m
+    - coverage xml -o cobertura.xml
+  coverage: '/TOTAL.+ ([0-9]{1,3}%)/'
+  artifacts:
+      reports:
+        cobertura: cobertura.xml
