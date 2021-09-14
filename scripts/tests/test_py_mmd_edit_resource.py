@@ -55,10 +55,6 @@ def test_open_mmd_xml_file():
     xtree = pmer.open_mmd_xml_file(input_mmd_xml_file, ns)
     assert isinstance(xtree, xml.etree.ElementTree.ElementTree) is True
 
-    input_mmd_xml_file = 'Non existing file'
-    with pytest.raises(FileNotFoundError):
-        pmer.open_mmd_xml_file(input_mmd_xml_file, ns)
-
 
 def test_open_mmd_xml_file_fnf(capsys, mocker):
     import sys
