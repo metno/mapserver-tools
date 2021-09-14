@@ -17,7 +17,7 @@ test:pytest:35:
     - k8s-unpriv
   image: python:3.5
   script:
-    - pip install coverage pytest pytest-cov pytest-mock pyyaml --quiet
+    - pip install coverage pytest pytest-cov pytest-mock pyyaml jinja2 --quiet
     - pytest --cov
     - coverage report -m
     - coverage xml -o cobertura.xml
@@ -41,7 +41,7 @@ test:pytest:37:
     - k8s-unpriv
   image: python:3.7
   script:
-    - pip install coverage pytest pytest-cov pytest-mock pyyaml --quiet
+    - pip install coverage pytest pytest-cov pytest-mock pyyaml jinja2 --quiet
     - pytest --cov
     - coverage report -m
     - coverage xml -o cobertura.xml
@@ -63,7 +63,7 @@ test:pytest:38:
     - k8s-unpriv
   image: python:3.8
   script:
-    - pip install coverage pytest pytest-cov pytest-mock pyyaml --quiet
+    - pip install coverage pytest pytest-cov pytest-mock pyyaml jinja2 --quiet
     - pytest --cov
     - coverage report -m
     - coverage xml -o cobertura.xml
@@ -85,7 +85,7 @@ test:pytest:39:
     - k8s-unpriv
   image: python:3.9
   script:
-    - pip install coverage pytest pytest-cov pytest-mock pyyaml --quiet
+    - pip install coverage pytest pytest-cov pytest-mock pyyaml jinja2 --quiet
     - pytest --cov
     - coverage report -m
     - coverage xml -o cobertura.xml
