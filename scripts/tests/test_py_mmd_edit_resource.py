@@ -145,6 +145,7 @@ def test_remove_wms_from_mmd_xml():
 
 
 def test_add_wms_to_mmd_xml():
+    import os
     import sys
     from importlib import import_module
 
@@ -185,3 +186,18 @@ def test_add_wms_to_mmd_xml():
             s = ('https://test.server.lo//cgi-bin/mapserv?map=test_mapserver_data_dir/mapserver/map-files/'
                  'test_map_output_file&service=WMS&amp;version=1.3.0&amp;request=GetCapabilities')
             assert wms_data_access_resource.text == s
+    os.remove('test-out.xml')       
+
+
+def test_load_template():
+    import sys
+    import jinja2
+    from importlib import import_module
+
+    sys.path.append('./scripts')
+    pmer = import_module('py-mmd-edit-resource')
+
+    map_template_file_name = 'map-file-template-okd-satellite.map'
+    map_template_input_dir = 'templates/'
+    template = pmer.load_template(map_template_input_dir, map_template_file_name)
+    assert isinstance(template, jinja2.Template) is True
