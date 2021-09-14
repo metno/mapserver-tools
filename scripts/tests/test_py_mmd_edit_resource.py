@@ -38,3 +38,40 @@ def test_generate_render_data():
         assert d_l['layer_title'] == c_l['title']
         assert d_l['geotiff_filename'] == os.path.join(mapserver_data_dir, os.path.basename(g_t))
         assert d_l['geotiff_timestamp'] == '2021-09-10T12:33:18Z'
+
+
+def test_open_mmd_xml_file():
+    import sys
+    import xml
+    from importlib import import_module
+
+    sys.path.append('./scripts')
+    pmer = import_module('py-mmd-edit-resource')
+
+    ns = {'mmd': 'http://www.met.no/schema/mmd',
+          'gml': 'http://www.opengis.net/gml'}
+
+    input_mmd_xml_file = 'scripts/tests/testdata/noaa19-avhrr-20210901070230-20210901071648.xml'
+    xtree = pmer.open_mmd_xml_file(input_mmd_xml_file, ns)
+    assert isinstance(xtree, xml.etree.ElementTree.ElementTree) is True
+
+    input_mmd_xml_file = 'Non existing file'
+    with pytest.raises(FileNotFoundError):
+        pmer.open_mmd_xml_file(input_mmd_xml_file, ns)
+
+
+def test_open_mmd_xml_file_fnf(capsys, mocker):
+    import sys
+    from importlib import import_module
+
+    sys.path.append('./scripts')
+    pmer = import_module('py-mmd-edit-resource')
+
+    ns = {'mmd': 'http://www.met.no/schema/mmd',
+          'gml': 'http://www.opengis.net/gml'}
+
+    input_mmd_xml_file = 'Non existing file'
+    mocker.patch('xml.etree.ElementTree.parse', side_effect=FileNotFoundError, autoSpec=True)
+    pmer.open_mmd_xml_file(input_mmd_xml_file, ns)
+    captured = capsys.readouterr()
+    assert 'Could not find the mmd xml input file. Please check you command line argument.' in captured.out
