@@ -6,19 +6,13 @@ import logging
 
 
 def test_check_arguments():
-    import sys
-    from importlib import import_module
-
-    sys.path.append('./scripts')
-    pmer = import_module('py-mmd-edit-resource')
+    from mapserver_tools.edit_wms_mmd_xml_files import check_arguments
     cmd_args = None
-    assert pmer.check_arguments(cmd_args) is True
+    assert check_arguments(cmd_args) is True
 
 
 def test_read_yaml_config_file():
-    import sys
-    from importlib import import_module
-
+    from mapserver_tools.edit_wms_mmd_xml_files import read_yaml_config_file
     config = {'layers': [{'match': 'overview',
                           'name': 'Overview',
                           'title': 'Overview'},
@@ -26,23 +20,17 @@ def test_read_yaml_config_file():
                           'name': 'natural_with_night_fog',
                           'title': 'Natural with night fog'}]}
 
-    sys.path.append('./scripts')
-    pmer = import_module('py-mmd-edit-resource')
     yaml_config_file = 'etc/okd-satellite-layer-metadata.yaml'
-    read_config = pmer.read_yaml_config_file(yaml_config_file)
+    read_config = read_yaml_config_file(yaml_config_file)
     assert read_config == config
-    read_config_debug = pmer.read_yaml_config_file(yaml_config_file, True)
+    read_config_debug = read_yaml_config_file(yaml_config_file, True)
     assert read_config_debug == config
 
 
 def test_generate_render_data():
     """Test check if distribute."""
     import os
-    import sys
-    from importlib import import_module
-
-    sys.path.append('./scripts')
-    pmer = import_module('py-mmd-edit-resource')
+    from mapserver_tools.edit_wms_mmd_xml_files import generate_mapserver_map_file
 
     config = {'layers': [{'match': 'overview',
                           'name': 'Overview',
@@ -56,7 +44,8 @@ def test_generate_render_data():
     map_output_file = 'test_map_output_file'
     input_data_files = ['scripts/testdata/overview_20210910_123318.tif',
                         'scripts/testdata/natural_with_night_fog_20210910_123318.tif']
-    data = pmer.generate_render_data(server_name, mapserver_data_dir, map_output_file, input_data_files, config)
+    gmmf = generate_mapserver_map_file()
+    data = gmmf.generate_render_data(server_name, mapserver_data_dir, map_output_file, input_data_files, config)
 
     assert data['server_name'] == server_name
     assert data['map_file_name'] == 'test_mapserver_data_dir/mapserver/map-files/test_map_output_file'
@@ -71,74 +60,61 @@ def test_generate_render_data():
 
 
 def test_open_mmd_xml_file():
-    import sys
     import xml
-    from importlib import import_module
-
-    sys.path.append('./scripts')
-    pmer = import_module('py-mmd-edit-resource')
-
+    from mapserver_tools.edit_wms_mmd_xml_files import edit_wms_mmd_xml_files
     ns = {'mmd': 'http://www.met.no/schema/mmd',
           'gml': 'http://www.opengis.net/gml'}
 
-    input_mmd_xml_file = 'scripts/tests/testdata/noaa19-avhrr-20210901070230-20210901071648.xml'
-    xtree = pmer.open_mmd_xml_file(input_mmd_xml_file, ns)
+    input_mmd_xml_file = 'mapserver_tools/tests/testdata/noaa19-avhrr-20210901070230-20210901071648.xml'
+    ewmxf = edit_wms_mmd_xml_files()
+    xtree = ewmxf.open_mmd_xml_file(input_mmd_xml_file, ns)
     assert isinstance(xtree, xml.etree.ElementTree.ElementTree) is True
 
 
 def test_open_mmd_xml_file_fnf(capsys, mocker):
-    import sys
-    from importlib import import_module
-
-    sys.path.append('./scripts')
-    pmer = import_module('py-mmd-edit-resource')
+    from mapserver_tools.edit_wms_mmd_xml_files import edit_wms_mmd_xml_files
 
     ns = {'mmd': 'http://www.met.no/schema/mmd',
           'gml': 'http://www.opengis.net/gml'}
 
     input_mmd_xml_file = 'Non existing file'
     mocker.patch('xml.etree.ElementTree.parse', side_effect=FileNotFoundError, autoSpec=True)
-    pmer.open_mmd_xml_file(input_mmd_xml_file, ns)
+    ewmxf = edit_wms_mmd_xml_files()
+    ewmxf.open_mmd_xml_file(input_mmd_xml_file, ns)
     captured = capsys.readouterr()
     assert 'Could not find the mmd xml input file. Please check you command line argument.' in captured.out
     capsys.disabled()
 
 
 def test_get_metadata_indentifier_from_mmd_xml():
-    import sys
-    from importlib import import_module
-
-    sys.path.append('./scripts')
-    pmer = import_module('py-mmd-edit-resource')
+    from mapserver_tools.edit_wms_mmd_xml_files import edit_wms_mmd_xml_files
 
     ns = {'mmd': 'http://www.met.no/schema/mmd',
           'gml': 'http://www.opengis.net/gml'}
 
-    input_mmd_xml_file = 'scripts/tests/testdata/noaa19-avhrr-20210901070230-20210901071648.xml'
-    xtree = pmer.open_mmd_xml_file(input_mmd_xml_file, ns)
+    input_mmd_xml_file = 'mapserver_tools/tests/testdata/noaa19-avhrr-20210901070230-20210901071648.xml'
+    ewmxf = edit_wms_mmd_xml_files()
+    xtree = ewmxf.open_mmd_xml_file(input_mmd_xml_file, ns)
 
-    mi = pmer.get_metadata_indentifier_from_mmd_xml(xtree, ns)
+    mi = ewmxf.get_metadata_indentifier_from_mmd_xml(xtree, ns)
     assert mi == '4f0946c4-3a0b-42b8-9094-69287d16fa64'
 
     mi = '8505ad3e-f9e3-4de3-a080-8253443ac954'
-    mi_reset = pmer.get_metadata_indentifier_from_mmd_xml(xtree, ns, mi)
+    mi_reset = ewmxf.get_metadata_indentifier_from_mmd_xml(xtree, ns, mi)
     assert mi_reset == mi
 
 
 def test_remove_wms_from_mmd_xml():
-    import sys
-    from importlib import import_module
-
-    sys.path.append('./scripts')
-    pmer = import_module('py-mmd-edit-resource')
+    from mapserver_tools.edit_wms_mmd_xml_files import edit_wms_mmd_xml_files
 
     ns = {'mmd': 'http://www.met.no/schema/mmd',
           'gml': 'http://www.opengis.net/gml'}
 
-    input_mmd_xml_file = 'scripts/tests/testdata/noaa19-avhrr-20210901070230-20210901071648.xml'
-    xroot = pmer.open_mmd_xml_file(input_mmd_xml_file, ns)
+    input_mmd_xml_file = 'mapserver_tools/tests/testdata/noaa19-avhrr-20210901070230-20210901071648.xml'
+    ewmxf = edit_wms_mmd_xml_files()
+    xroot = ewmxf.open_mmd_xml_file(input_mmd_xml_file, ns)
     xtree = xroot.getroot()
-    pmer.remove_wms_from_mmd_xml(xtree, ns)
+    ewmxf.remove_wms_from_mmd_xml(xtree, ns)
     for data_access in xroot.findall("mmd:data_access", ns):
         access_type = data_access.find("mmd:type", ns)
         assert access_type.text != 'OGC WMS'
@@ -146,11 +122,7 @@ def test_remove_wms_from_mmd_xml():
 
 def test_add_wms_to_mmd_xml():
     import os
-    import sys
-    from importlib import import_module
-
-    sys.path.append('./scripts')
-    pmer = import_module('py-mmd-edit-resource')
+    from mapserver_tools.edit_wms_mmd_xml_files import edit_wms_mmd_xml_files
 
     config = {'layers': [{'match': 'overview',
                           'name': 'Overview',
@@ -167,15 +139,16 @@ def test_add_wms_to_mmd_xml():
     ns = {'mmd': 'http://www.met.no/schema/mmd',
           'gml': 'http://www.opengis.net/gml'}
 
-    input_mmd_xml_file = 'scripts/tests/testdata/noaa19-avhrr-20210901070230-20210901071648.xml'
-    xtree = pmer.open_mmd_xml_file(input_mmd_xml_file, ns)
+    input_mmd_xml_file = 'mapserver_tools/tests/testdata/noaa19-avhrr-20210901070230-20210901071648.xml'
+    ewmxf = edit_wms_mmd_xml_files()
+    xtree = ewmxf.open_mmd_xml_file(input_mmd_xml_file, ns)
     xroot = xtree.getroot()
-    pmer.remove_wms_from_mmd_xml(xroot, ns)
-    pmer.add_wms_to_mmd_xml(xroot, server_name, mapserver_data_dir,
-                            map_output_file, input_data_files, config)
-    pmer.rewrite_mmd_xml(xtree, 'test-out.xml')
+    ewmxf.remove_wms_from_mmd_xml(xroot, ns)
+    ewmxf.add_wms_to_mmd_xml(xroot, server_name, mapserver_data_dir,
+                             map_output_file, input_data_files, config)
+    ewmxf.rewrite_mmd_xml(xtree, 'test-out.xml')
 
-    xtree = pmer.open_mmd_xml_file('test-out.xml', ns)
+    xtree = ewmxf.open_mmd_xml_file('test-out.xml', ns)
     xroot = xtree.getroot()
     for data_access in xroot.findall("mmd:data_access", ns):
         access_type = data_access.find("mmd:type", ns)
@@ -190,14 +163,11 @@ def test_add_wms_to_mmd_xml():
 
 
 def test_load_template():
-    import sys
     import jinja2
-    from importlib import import_module
-
-    sys.path.append('./scripts')
-    pmer = import_module('py-mmd-edit-resource')
+    from mapserver_tools.edit_wms_mmd_xml_files import generate_mapserver_map_file
 
     map_template_file_name = 'map-file-template-okd-satellite.map'
     map_template_input_dir = 'templates/'
-    template = pmer.load_template(map_template_input_dir, map_template_file_name)
+    gmmf = generate_mapserver_map_file()
+    template = gmmf.load_template(map_template_input_dir, map_template_file_name)
     assert isinstance(template, jinja2.Template) is True
