@@ -219,7 +219,7 @@ def test_load_template_exception2(capsys):
 
 
 def test_match_input_file_with_layer_config(capsys):
-    from mapserver_tools.edit_wms_mmd_xml_files import generate_mapserver_map_file
+    from mapserver_tools.edit_wms_mmd_xml_files import match_input_file_with_layer_config
     config = {'layers': [{'match': 'TEST',
                           'name': 'Overview',
                           'title': 'Overview'},
@@ -227,8 +227,7 @@ def test_match_input_file_with_layer_config(capsys):
                           'name': 'natural_with_night_fog',
                           'title': 'Natural with night fog'}]}
     input_data_file = 'scripts/testdata/overview_20210910_123318.tif'
-    gmmf = generate_mapserver_map_file()
-    gmmf.match_input_file_with_layer_config(input_data_file, config)
+    match_input_file_with_layer_config(input_data_file, config)
     captured = capsys.readouterr()
     assert 'Could not find matching layer config to the input file. Fix you layer config.' in captured.out
     capsys.disabled()
