@@ -186,7 +186,7 @@ def test_add_wms_to_mmd_xml():
             s = ('https://test.server.lo//cgi-bin/mapserv?map=test_mapserver_data_dir/mapserver/map-files/'
                  'test_map_output_file&service=WMS&amp;version=1.3.0&amp;request=GetCapabilities')
             assert wms_data_access_resource.text == s
-    os.remove('test-out.xml')       
+    os.remove('test-out.xml')
 
 
 def test_load_template():
