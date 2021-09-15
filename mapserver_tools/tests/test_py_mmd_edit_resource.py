@@ -2,7 +2,6 @@
 """
 
 import pytest
-import logging
 
 
 def test_check_arguments():
@@ -27,7 +26,7 @@ def test_read_yaml_config_file():
     assert read_config_debug == config
 
 
-def test_read_yaml_config_file_exception1(capsys, mocker):
+def test_read_yaml_config_file_exception1(mocker):
     import yaml
     from mapserver_tools.edit_wms_mmd_xml_files import read_yaml_config_file
     yaml_config_file = 'etc/okd-satellite-layer-metadata.yaml'
@@ -192,3 +191,19 @@ def test_load_template():
     gmmf = generate_mapserver_map_file()
     template = gmmf.load_template(map_template_input_dir, map_template_file_name)
     assert isinstance(template, jinja2.Template) is True
+
+
+def test_match_input_file_with_layer_config(capsys):
+    from mapserver_tools.edit_wms_mmd_xml_files import generate_mapserver_map_file
+    config = {'layers': [{'match': 'TEST',
+                          'name': 'Overview',
+                          'title': 'Overview'},
+                         {'match': 'natural_with_night_fog',
+                          'name': 'natural_with_night_fog',
+                          'title': 'Natural with night fog'}]}
+    input_data_file = 'scripts/testdata/overview_20210910_123318.tif'
+    gmmf = generate_mapserver_map_file()
+    gmmf.match_input_file_with_layer_config(input_data_file, config)
+    captured = capsys.readouterr()
+    assert 'Could not find matching layer config to the input file. Fix you layer config.' in captured.out
+    capsys.disabled()

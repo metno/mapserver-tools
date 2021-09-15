@@ -121,8 +121,8 @@ class generate_mapserver_map_file():
         for layer in config['layers']:
             if os.path.basename(input_file).startswith(layer['match']):
                 return layer
-        print("Could not find matching layer config to the input file. Fix you layuer config.")
-        sys.exit(1)
+        print("Could not find matching layer config to the input file. Fix you layer config.")
+        return None
 
     def generate_render_data(self, server_name, mapserver_data_dir, map_output_file, input_data_files, config):
         data = {}
@@ -135,7 +135,7 @@ class generate_mapserver_map_file():
         data['layers'] = []
         for file_layer in input_data_files:
             layer = {}
-            layer_config = match_input_file_with_layer_config(file_layer, config)
+            layer_config = self.match_input_file_with_layer_config(file_layer, config)
             layer['layer_name'] = layer_config['name']
             layer['geotiff_filename'] = os.path.join(mapserver_data_dir, os.path.basename(file_layer))
             layer['layer_title'] = layer_config['title']

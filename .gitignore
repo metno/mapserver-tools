@@ -1,3 +1,4 @@
 *.map
 __pycache__
 .vscode
+*.pyc
