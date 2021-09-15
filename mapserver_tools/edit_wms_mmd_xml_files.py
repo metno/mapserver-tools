@@ -53,10 +53,9 @@ def read_yaml_config_file(yaml_config_file, debug=False):
                     pp.pprint(config)
             except yaml.YAMLError as exc:
                 print("Failed reading yaml config file: {} with: {}".format(yaml_config_file, exc))
-                raise yaml.YAMLError
+                raise
     except FileNotFoundError:
         print("Could not find this config file. Please check the filename.")
-        sys.exit(1)
     return config
 
 
