@@ -149,14 +149,13 @@ class generate_mapserver_map_file():
             env = jinja2.Environment(loader=jinja2.FileSystemLoader(map_template_input_dir))
         except TypeError:
             print("Could not find map template input dir. Please check this directory.")
-            sys.exit(1)
+            return None
 
         try:
             t = env.get_template(map_template_file_name)
         except jinja2.exceptions.TemplateNotFound:
             print("Could not find the template. Please check the filename.")
-            sys.exit(1)
-
+            return None
         return t
 
     def write_map_file(self, map_file_output_dir, map_output_file, template, data):

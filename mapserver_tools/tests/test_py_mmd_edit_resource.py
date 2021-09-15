@@ -193,6 +193,33 @@ def test_load_template():
     assert isinstance(template, jinja2.Template) is True
 
 
+def test_load_template_exception1(mocker, capsys):
+    from mapserver_tools.edit_wms_mmd_xml_files import generate_mapserver_map_file
+
+    map_template_file_name = 'map-file-template-okd-satellite.map'
+    map_template_input_dir = 'templates/'
+    mocker.patch('jinja2.Environment', side_effect=TypeError)
+    gmmf = generate_mapserver_map_file()
+    gmmf.load_template(map_template_input_dir, map_template_file_name)
+    captured = capsys.readouterr()
+    assert 'Could not find map template input dir. Please check this directory.' in captured.out
+    capsys.disabled()
+
+
+def test_load_template_exception2(mocker, capsys):
+    import jinja2
+    from mapserver_tools.edit_wms_mmd_xml_files import generate_mapserver_map_file
+
+    map_template_file_name = 'TEST-map-file-template-okd-satellite.map'
+    map_template_input_dir = 'templates/'
+    #mocker.patch('jinja2.Environment.get_template', side_effect=jinja2.exceptions.TemplateNotFound)
+    gmmf = generate_mapserver_map_file()
+    gmmf.load_template(map_template_input_dir, map_template_file_name)
+    captured = capsys.readouterr()
+    assert 'Could not find the template. Please check the filename.' in captured.out
+    capsys.disabled()
+
+
 def test_match_input_file_with_layer_config(capsys):
     from mapserver_tools.edit_wms_mmd_xml_files import generate_mapserver_map_file
     config = {'layers': [{'match': 'TEST',
