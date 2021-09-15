@@ -206,13 +206,11 @@ def test_load_template_exception1(mocker, capsys):
     capsys.disabled()
 
 
-def test_load_template_exception2(mocker, capsys):
-    import jinja2
+def test_load_template_exception2(capsys):
     from mapserver_tools.edit_wms_mmd_xml_files import generate_mapserver_map_file
 
     map_template_file_name = 'TEST-map-file-template-okd-satellite.map'
     map_template_input_dir = 'templates/'
-    #mocker.patch('jinja2.Environment.get_template', side_effect=jinja2.exceptions.TemplateNotFound)
     gmmf = generate_mapserver_map_file()
     gmmf.load_template(map_template_input_dir, map_template_file_name)
     captured = capsys.readouterr()
@@ -234,3 +232,19 @@ def test_match_input_file_with_layer_config(capsys):
     captured = capsys.readouterr()
     assert 'Could not find matching layer config to the input file. Fix you layer config.' in captured.out
     capsys.disabled()
+
+
+def test_write_map_file():
+    import os
+    from mapserver_tools.edit_wms_mmd_xml_files import generate_mapserver_map_file
+    gmmf = generate_mapserver_map_file()
+    map_file_output_dir = '.'
+    map_output_file = 'TEST.map'
+    data = {}
+    map_template_file_name = 'map-file-template-okd-satellite.map'
+    map_template_input_dir = 'templates/'
+    template = gmmf.load_template(map_template_input_dir, map_template_file_name)
+
+    gmmf.write_map_file(map_file_output_dir, map_output_file, template, data)
+    assert os.path.exists(os.path.join(map_file_output_dir, map_output_file)) is True
+    os.remove(os.path.join(map_file_output_dir, map_output_file))

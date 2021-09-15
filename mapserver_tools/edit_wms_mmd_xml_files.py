@@ -33,8 +33,7 @@ def match_input_file_with_layer_config(input_file, config):
     for layer in config['layers']:
         if os.path.basename(input_file).startswith(layer['match']):
             return layer
-    print("Could not find matching layer config to the input file. Fix you layuer config.")
-    sys.exit(1)
+    print("Could not find matching layer config to the input file. Fix you layer config.")
 
 
 def check_arguments(cmd_args):
