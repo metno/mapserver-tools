@@ -27,6 +27,27 @@ def test_read_yaml_config_file():
     assert read_config_debug == config
 
 
+def test_read_yaml_config_file_exception1(capsys, mocker):
+    import yaml
+    from mapserver_tools.edit_wms_mmd_xml_files import read_yaml_config_file
+    yaml_config_file = 'etc/okd-satellite-layer-metadata.yaml'
+    mocker.patch('yaml.load', side_effect=yaml.YAMLError)
+
+    with pytest.raises(yaml.YAMLError):
+        read_yaml_config_file(yaml_config_file)
+
+
+def test_read_yaml_config_file_exception2(capsys, mocker):
+    from mapserver_tools.edit_wms_mmd_xml_files import read_yaml_config_file
+    yaml_config_file = 'etc/okd-satellite-layer-metadata.yaml'
+    mocker.patch('builtins.open', side_effect=FileNotFoundError)
+
+    read_yaml_config_file(yaml_config_file)
+    captured = capsys.readouterr()
+    assert 'Could not find this config file. Please check the filename.' in captured.out
+    capsys.disabled()
+
+
 def test_generate_render_data():
     """Test check if distribute."""
     import os
