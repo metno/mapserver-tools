@@ -62,8 +62,8 @@ def test_generate_render_data():
     server_name = 'https://test.server.lo/'
     mapserver_data_dir = 'test_mapserver_data_dir'
     map_output_file = 'test_map_output_file'
-    input_data_files = ['scripts/testdata/overview_20210910_123318.tif',
-                        'scripts/testdata/natural_with_night_fog_20210910_123318.tif']
+    input_data_files = ['mapserver_tools/tests/testdata/overview_20210910_123318.tif',
+                        'mapserver_tools/tests/testdata/natural_with_night_fog_20210910_123318.tif']
     gmmf = generate_mapserver_map_file()
     data = gmmf.generate_render_data(server_name, mapserver_data_dir, map_output_file, input_data_files, config)
 
