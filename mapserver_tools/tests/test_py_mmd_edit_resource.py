@@ -153,8 +153,8 @@ def test_add_wms_to_mmd_xml():
     server_name = 'https://test.server.lo/'
     mapserver_data_dir = 'test_mapserver_data_dir'
     map_output_file = 'test_map_output_file'
-    input_data_files = ['scripts/testdata/overview_20210910_123318.tif',
-                        'scripts/testdata/natural_with_night_fog_20210910_123318.tif']
+    input_data_files = ['mapserver_tools/tests/testdata/overview_20210910_123318.tif',
+                        'mapserver_tools/tests/testdata/natural_with_night_fog_20210910_123318.tif']
 
     ns = {'mmd': 'http://www.met.no/schema/mmd',
           'gml': 'http://www.opengis.net/gml'}
@@ -226,7 +226,7 @@ def test_match_input_file_with_layer_config(capsys):
                          {'match': 'natural_with_night_fog',
                           'name': 'natural_with_night_fog',
                           'title': 'Natural with night fog'}]}
-    input_data_file = 'scripts/testdata/overview_20210910_123318.tif'
+    input_data_file = 'mapserver_tools/tests/testdata/overview_20210910_123318.tif'
     match_input_file_with_layer_config(input_data_file, config)
     captured = capsys.readouterr()
     assert 'Could not find matching layer config to the input file. Fix you layer config.' in captured.out
