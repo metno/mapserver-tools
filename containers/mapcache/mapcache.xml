@@ -16,13 +16,13 @@
 
     <source name="vmap0" type="wms">
         <http>
-            <url>https://s-enda-ogc-dev.k8s.met.no/cgi-bin/mapserv?</url>
+            <url>https://s-enda-dev.k8s.met.no/cgi-bin/mapserv?</url>
         </http>
         <getmap>
             <params>
                 <FORMAT>image/png</FORMAT>
                 <LAYERS>Overview</LAYERS>
-                <!--<MAP>/data/mapserver/map-files/mapserver-8505ad3e-f9e3-4de3-a080-8253443ac954-20210908T120432Z.map</MAP>-->
+                <MAP>/data/mapserver/map-files/mapserver-8505ad3e-f9e3-4de3-a080-8253443ac954-20210908T120432Z.map</MAP>
             </params>
         </getmap>
     </source>
