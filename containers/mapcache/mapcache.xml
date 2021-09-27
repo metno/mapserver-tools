@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mapcache>
+   <service type="wms" enabled="true">
+        <!--<forwarding_rule name="catch all">
+        <http>
+            <url>https://s-enda-ogc-dev.k8s.met.no//cgi-bin/mapserv?map=/data/mapserver/map-files/mapserver-8505ad3e-f9e3-4de3-a080-8253443ac954-20210908T120432Z.map</url>
+        </http>
+        </forwarding_rule>-->
+    </service>
+
+    <cache name="disk" type="disk">
+        <base>/data/mapcache</base>
+        <!--<symlink_blank/>-->
+        <template>/data/mapcache/{tileset}#{grid}#{dim}/{z}/{x}/{y}.{ext}</template>
+    </cache>
+
+    <source name="vmap0" type="wms">
+        <http>
+            <url>https://s-enda-ogc-dev.k8s.met.no/cgi-bin/mapserv?</url>
+        </http>
+        <getmap>
+            <params>
+                <FORMAT>image/png</FORMAT>
+                <LAYERS>Overview</LAYERS>
+                <!--<MAP>/data/mapserver/map-files/mapserver-8505ad3e-f9e3-4de3-a080-8253443ac954-20210908T120432Z.map</MAP>-->
+            </params>
+        </getmap>
+    </source>
+
+    <tileset name="Overview">
+        <source>vmap0</source>
+        <cache>disk</cache>
+        <format>mixed</format>
+        <grid>WGS84</grid>
+    </tileset>
+
+</mapcache>
