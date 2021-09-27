@@ -1,4 +1,5 @@
-FROM registry.met.no/baseimg/ubuntu:18.04
+ARG BASE_IMAGE=ubuntu:20.04
+FROM $BASE_IMAGE
 
 # let's copy a few of the settings from /etc/init.d/apache2
 ENV APACHE_CONFDIR /etc/apache2
