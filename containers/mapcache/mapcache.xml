@@ -16,7 +16,7 @@
 
     <source name="vmap0" type="wms">
         <http>
-            <url>https://s-enda-dev.k8s.met.no/cgi-bin/mapserv?</url>
+            <url>https://mapserver-dev.s-enda.k8s.met.no/cgi-bin/mapserv?</url>
         </http>
         <getmap>
             <params>
