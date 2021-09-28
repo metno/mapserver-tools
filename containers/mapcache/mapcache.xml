@@ -1,6 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <mapcache>
-   <service type="wms" enabled="true">
+    <metadata>
+      <title>my mapcache service</title>
+      <abstract>woot! this is a service abstract!</abstract>
+      <url>https://mapcache-dev.s-enda.k8s.met.no/mapcache</url>
+    </metadata>
+    <service type="wms" enabled="true">
         <!--<forwarding_rule name="catch all">
         <http>
             <url>https://s-enda-ogc-dev.k8s.met.no//cgi-bin/mapserv?map=/data/mapserver/map-files/mapserver-8505ad3e-f9e3-4de3-a080-8253443ac954-20210908T120432Z.map</url>
