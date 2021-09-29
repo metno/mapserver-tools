@@ -38,8 +38,8 @@ RUN apt-get update \
 EXPOSE 8080
 
 COPY mapserver.conf /etc/apache2/conf-enabled/
-COPY mapserver-8505ad3e-f9e3-4de3-a080-8253443ac954-20210910T123318Z.map /data/mapserver/map-files/
-COPY natural_with_night_fog_20210910_123318.tif /data/
+#COPY mapserver-8505ad3e-f9e3-4de3-a080-8253443ac954-20210910T123318Z.map /data/mapserver/map-files/
+#COPY natural_with_night_fog_20210910_123318.tif /data/
 
 ENV MS_DEBUGLEVEL 5
 ENV MS_ERRORFILE stderr
