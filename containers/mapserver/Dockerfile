@@ -18,7 +18,7 @@ ENV MAPSERVER_VERSION 7.4.\*
 RUN apt-get update \
   && DEBIAN_FRONTEND="noninteractive" TZ="Europe/Oslo" apt-get -y install tzdata \
   && apt-get install -y apache2 cgi-mapserver=$MAPSERVER_VERSION libapache2-mod-fcgid dumb-init \
-  && postgresql-client-common \
+  && apt-get install -y postgresql-client-common \
   && apt-get clean \
   && rm -rf /var/lib/apt/lists/* \
   && a2enmod fcgid headers \
