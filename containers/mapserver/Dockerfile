@@ -13,7 +13,7 @@ ENV APACHE_LOCK_DIR /var/lock/apache2
 ENV APACHE_LOG_DIR /var/log/apache2
 ENV LANG C
 ENV MAPSERVER_VERSION 7.4.\*
-ENV PGPASSFILE /etc/.pgpass
+ENV PGPASSFILE /mapfiles/.pgpass
 
 RUN apt-get update \
   && DEBIAN_FRONTEND="noninteractive" TZ="Europe/Oslo" apt-get -y install tzdata \
