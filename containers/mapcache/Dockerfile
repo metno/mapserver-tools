@@ -17,6 +17,7 @@ ENV LANG C
 RUN apt-get update \
   && DEBIAN_FRONTEND="noninteractive" TZ="Europe/Oslo" apt-get -y install tzdata \
   && apt-get install -y apache2 libapache2-mod-mapcache dumb-init \
+  && apt-get install -y postgresql-client-common postgresql-client \
   && rm -rf /var/lib/apt/lists/* \
   && printf "<IfModule mapcache_module>\n   MapCacheAlias /mapcache \"/etc/apache2/mapcache.xml\"\n</IfModule>\n" > /etc/apache2/mods-available/mapcache.conf \
   && a2enmod mapcache \
