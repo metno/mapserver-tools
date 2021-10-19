@@ -16,9 +16,21 @@ ENV LANG C
 
 RUN apt-get update \
   && DEBIAN_FRONTEND="noninteractive" TZ="Europe/Oslo" apt-get -y install tzdata \
-  && apt-get install -y apache2 libapache2-mod-mapcache dumb-init \
+  && apt-get install -y git cmake apache2 apache2-dev dumb-init \
+  && apt-get install -y libpng-dev libcurl4-gnutls-dev libjpeg8-dev libaprutil1-dev libapr1-dev \
+  && apt-get install -y libpixman-1-dev libgdal-dev libpq-dev libsqlite3-dev libtiff-dev libgeotiff-dev libgeos-dev\
+  && apt-get install -y libfcgi-dev postgresql-server-dev-all \
+  && apt-get clean \
   && rm -rf /var/lib/apt/lists/* \
+  && git clone https://github.com/MapServer/mapcache.git /tmp/mapcache \
+  && mkdir -p /tmp/mapcache/build && cd /tmp/mapcache/build \
+  && cmake .. -DWITH_POSTGRESQL=1 -DWITH_TIFF=1 -DWITH_GEOTIFF=1 \
+  && make install \
+  && make clean \
   && printf "<IfModule mapcache_module>\n   MapCacheAlias /mapcache \"/etc/apache2/mapcache.xml\"\n</IfModule>\n" > /etc/apache2/mods-available/mapcache.conf \
+  && printf "LoadModule mapcache_module /usr/lib/apache2/modules/mod_mapcache.so\n" > /etc/apache2/mods-available/mapcache.load \
+  && printf "/usr/local/lib/" > /etc/ld.so.conf.d/mapcache.conf \
+  && ldconfig \
   && a2enmod mapcache \
   && a2dismod -f auth_basic authn_file authn_core authz_host authz_user autoindex dir status \
   && rm /etc/apache2/mods-enabled/alias.conf \
