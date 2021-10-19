@@ -30,6 +30,7 @@ RUN apt-get update \
        s!^(\s*ErrorLog)\s+\S+!\1 /proc/self/fd/2!g; \
        ' '{}' ';' \
   && sed -ri 's!<VirtualHost\s\*:80>!<VirtualHost *:8090>!g' /etc/apache2/sites-available/000-default.conf \
+  && sed -ri 's!<\/VirtualHost>!        Header set Access-Control-Allow-Origin "*"\n<\/VirtualHost>!g' /etc/apache2/sites-available/000-default.conf \
   && sed -ri 's!Listen\s80$!Listen 8090!g' /etc/apache2/ports.conf \
   && apt-get -y autoremove
 
