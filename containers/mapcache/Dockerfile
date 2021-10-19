@@ -31,7 +31,7 @@ RUN apt-get update \
   && printf "LoadModule mapcache_module /usr/lib/apache2/modules/mod_mapcache.so\n" > /etc/apache2/mods-available/mapcache.load \
   && printf "/usr/local/lib/" > /etc/ld.so.conf.d/mapcache.conf \
   && ldconfig \
-  && a2enmod mapcache \
+  && a2enmod mapcache headers \
   && a2dismod -f auth_basic authn_file authn_core authz_host authz_user autoindex dir status \
   && rm /etc/apache2/mods-enabled/alias.conf \
   && mkdir -p $APACHE_RUN_DIR $APACHE_LOCK_DIR $APACHE_LOG_DIR \
