@@ -44,6 +44,7 @@ RUN apt-get update \
   && sed -ri 's!<VirtualHost\s\*:80>!<VirtualHost *:8090>!g' /etc/apache2/sites-available/000-default.conf \
   && sed -ri 's!<\/VirtualHost>!        Header set Access-Control-Allow-Origin "*"\n<\/VirtualHost>!g' /etc/apache2/sites-available/000-default.conf \
   && sed -ri 's!Listen\s80$!Listen 8090!g' /etc/apache2/ports.conf \
+  && sed -ri 's!LogLevel\swarn$!LogLevel debug!g' /etc/apache2/apache2.conf \
   && apt-get -y autoremove
 
 EXPOSE 8090
