@@ -24,7 +24,7 @@ RUN apt-get update \
   && rm -rf /var/lib/apt/lists/* \
   && git clone https://github.com/MapServer/mapcache.git /tmp/mapcache \
   && mkdir -p /tmp/mapcache/build && cd /tmp/mapcache/build \
-  && cmake .. -DWITH_POSTGRESQL=1 -DWITH_TIFF=1 -DWITH_GEOTIFF=1 \
+  && cmake .. -DWITH_POSTGRESQL=1 -DWITH_TIFF=1 -DWITH_GEOTIFF=1 -DWITH_MEMCACHE=1 \
   && make install \
   && make clean \
   && printf "<IfModule mapcache_module>\n   MapCacheAlias /mapcache \"/etc/apache2/mapcache.xml\"\n</IfModule>\n" > /etc/apache2/mods-available/mapcache.conf \
@@ -56,7 +56,7 @@ ENV MS_ERRORFILE stderr
 ENV MAX_REQUESTS_PER_PROCESS 1000
 ENV IO_TIMEOUT=40
 ENV MIN_PROCESSES=1
-ENV MAX_PROCESSES=5
+ENV MAX_PROCESSES=100
 ENV BUSY_TIMEOUT=300
 ENV IDLE_TIMEOUT=300
 
