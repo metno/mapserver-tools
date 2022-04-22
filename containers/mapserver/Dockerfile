@@ -2,18 +2,17 @@ ARG BASE_IMAGE=ubuntu:20.04
 FROM $BASE_IMAGE
 
 # let's copy a few of the settings from /etc/init.d/apache2
-ENV APACHE_CONFDIR /etc/apache2
-ENV APACHE_ENVVARS $APACHE_CONFDIR/envvars
-# and then a few more from $APACHE_CONFDIR/envvars itself
-ENV APACHE_RUN_USER www-data
-ENV APACHE_RUN_GROUP www-data
-ENV APACHE_RUN_DIR /var/run/apache2
-ENV APACHE_PID_FILE $APACHE_RUN_DIR/apache2.pid
-ENV APACHE_LOCK_DIR /var/lock/apache2
-ENV APACHE_LOG_DIR /var/log/apache2
-ENV LANG C
-ENV MAPSERVER_VERSION 7.4.\*
-ENV PGPASSFILE /mapfiles/.pgpass
+ENV APACHE_CONFDIR=/etc/apache2 \
+  APACHE_ENVVARS=$APACHE_CONFDIR/envvars \
+  # and then a few more from $APACHE_CONFDIR/envvars itself
+  APACHE_RUN_USER=www-data \
+  APACHE_RUN_GROUP=www-data \
+  APACHE_RUN_DIR=/var/run/apache2 \
+  APACHE_PID_FILE=$APACHE_RUN_DIR/apache2.pid \
+  APACHE_LOCK_DIR=/var/lock/apache2 \
+  APACHE_LOG_DIR=/var/log/apache2 \
+  LANG=C \
+  MAPSERVER_VERSION=7.4.\*
 
 RUN apt-get update \
   && DEBIAN_FRONTEND="noninteractive" TZ="Europe/Oslo" apt-get -y install tzdata \
@@ -38,16 +37,14 @@ RUN apt-get update \
 EXPOSE 8080
 
 COPY mapserver.conf /etc/apache2/conf-enabled/
-#COPY mapserver-8505ad3e-f9e3-4de3-a080-8253443ac954-20210910T123318Z.map /data/mapserver/map-files/
-#COPY natural_with_night_fog_20210910_123318.tif /data/
 
-ENV MS_DEBUGLEVEL 5
-ENV MS_ERRORFILE stderr
-ENV MAX_REQUESTS_PER_PROCESS 1000
-ENV IO_TIMEOUT=40
-ENV MIN_PROCESSES=1
-ENV MAX_PROCESSES=100
-ENV BUSY_TIMEOUT=300
-ENV IDLE_TIMEOUT=300
+ENV MS_DEBUGLEVEL=5 \
+  MS_ERRORFILE=stderr \
+  MAX_REQUESTS_PER_PROCESS=1000 \
+  IO_TIMEOUT=40 \
+  MIN_PROCESSES=1 \
+  MAX_PROCESSES=100 \
+  BUSY_TIMEOUT=300 \
+  IDLE_TIMEOUT=300
 
 CMD ["/usr/bin/dumb-init", "--", "apache2", "-DFOREGROUND"]
