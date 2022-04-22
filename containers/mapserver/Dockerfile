@@ -3,12 +3,12 @@ FROM $BASE_IMAGE
 
 # let's copy a few of the settings from /etc/init.d/apache2
 ENV APACHE_CONFDIR=/etc/apache2 \
-  APACHE_ENVVARS=$APACHE_CONFDIR/envvars \
+  APACHE_ENVVARS=/etc/apache2/envvars \
   # and then a few more from $APACHE_CONFDIR/envvars itself
   APACHE_RUN_USER=www-data \
   APACHE_RUN_GROUP=www-data \
   APACHE_RUN_DIR=/var/run/apache2 \
-  APACHE_PID_FILE=$APACHE_RUN_DIR/apache2.pid \
+  APACHE_PID_FILE=/var/run/apache2/apache2.pid \
   APACHE_LOCK_DIR=/var/lock/apache2 \
   APACHE_LOG_DIR=/var/log/apache2 \
   LANG=C \
