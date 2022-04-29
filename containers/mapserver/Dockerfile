@@ -17,10 +17,11 @@ ENV APACHE_CONFDIR=/etc/apache2 \
 RUN apt-get update \
   && DEBIAN_FRONTEND="noninteractive" TZ="Europe/Oslo" apt-get -y install tzdata \
   && apt-get install -y apache2 apache2-dev cgi-mapserver=$MAPSERVER_VERSION libapache2-mod-fcgid dumb-init \
-  && apt-get install -y postgresql-client-common postgresql-client gdal-bin \
+  && apt-get install -y postgresql-client-common postgresql-client gdal-bin pip3 \
   && apt-get clean \
   && rm -rf /var/lib/apt/lists/* \
-  && a2enmod fcgid headers rewrite proxy_http \
+  && pip3 install mod-wsgi \
+  && a2enmod fcgid headers rewrite proxy_http mod_wsgi\
   && a2dismod -f auth_basic authn_file authn_core authz_host authz_user autoindex dir status \
   && rm /etc/apache2/mods-enabled/alias.conf \
   && mkdir -p $APACHE_RUN_DIR $APACHE_LOCK_DIR $APACHE_LOG_DIR \
