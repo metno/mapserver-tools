@@ -21,7 +21,7 @@ RUN apt-get update \
   && apt-get clean \
   && rm -rf /var/lib/apt/lists/* \
   && pip3 install mod-wsgi \
-  && a2enmod fcgid headers rewrite proxy_http wsgi_module \
+  && a2enmod fcgid headers rewrite proxy_http \
   && a2dismod -f auth_basic authn_file authn_core authz_host authz_user autoindex dir status \
   && rm /etc/apache2/mods-enabled/alias.conf \
   && mkdir -p $APACHE_RUN_DIR $APACHE_LOCK_DIR $APACHE_LOG_DIR \
