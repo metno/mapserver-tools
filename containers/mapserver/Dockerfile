@@ -17,7 +17,7 @@ ENV APACHE_CONFDIR=/etc/apache2 \
 RUN apt-get update \
   && DEBIAN_FRONTEND="noninteractive" TZ="Europe/Oslo" apt-get -y install tzdata \
   && apt-get install -y apache2 apache2-dev cgi-mapserver=$MAPSERVER_VERSION libapache2-mod-fcgid dumb-init \
-  && apt-get install -y postgresql-client-common postgresql-client gdal-bin pip3 \
+  && apt-get install -y postgresql-client-common postgresql-client gdal-bin pip \
   && apt-get clean \
   && rm -rf /var/lib/apt/lists/* \
   && pip3 install mod-wsgi \
