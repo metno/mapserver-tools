@@ -20,7 +20,7 @@ RUN apt-get update \
   && apt-get install -y postgresql-client-common postgresql-client gdal-bin pip \
   && apt-get clean \
   && rm -rf /var/lib/apt/lists/* \
-  && pip3 install mod-wsgi \
+  && pip3 install mod-wsgi boto3 \
   && /usr/local/bin/mod_wsgi-express install-module > /etc/apache2/mods-available/wsgi_module.load \
   && a2enmod fcgid headers rewrite proxy_http wsgi_module \
   && a2dismod -f auth_basic authn_file authn_core authz_host authz_user autoindex dir status \
