@@ -315,3 +315,14 @@ def test_read_layers_from_getcapabilities(mocker):
     ewmxf = edit_wms_mmd_xml_files()
     layers = ['hr_overview', 'ir_window_channel']
     assert ewmxf.read_layers_from_getcapabilities('https://some-host/?request=getcapabilities') == layers
+
+
+# def test_main(mocker):
+#    import os
+#    import sys
+#    from mapserver_tools.edit_wms_mmd_xml_files import main
+#    input_mmd_xml_file = 'mapserver_tools/tests/testdata/noaa19-avhrr-20210901070230-20210901071648.xml'
+#    testargs = ["prog", input_mmd_xml_file]
+#   mocker.patch.object(sys, 'argv', testargs)
+#    main()
+#    os.remove(os.path.basename(input_mmd_xml_file))
