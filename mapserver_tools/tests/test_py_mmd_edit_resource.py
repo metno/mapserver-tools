@@ -181,6 +181,7 @@ def test_add_wms_to_mmd_xml_old():
             assert wms_data_access_resource.text == s
     os.remove('test-out.xml')
 
+
 def test_add_wms_to_mmd_xml():
     import os
     import datetime
