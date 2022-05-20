@@ -41,4 +41,4 @@ setup(name="mapserver-tools",
       data_files=[],
       packages=[],
       zip_safe=False,
-      install_requires=['jinja2', 'rasterio'])
+      install_requires=['jinja2', 'rasterio', 'requests'])
