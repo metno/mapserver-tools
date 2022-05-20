@@ -1,0 +1,179 @@
+<?xml version='1.0' encoding="UTF-8" standalone="no" ?>
+<WMS_Capabilities version="1.3.0"  xmlns="http://www.opengis.net/wms"   xmlns:sld="http://www.opengis.net/sld"   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"   xmlns:ms="http://mapserver.gis.umn.edu/mapserver"   xsi:schemaLocation="http://www.opengis.net/wms http://schemas.opengis.net/wms/1.3.0/capabilities_1_3_0.xsd  http://www.opengis.net/sld http://schemas.opengis.net/sld/1.1.0/sld_capabilities.xsd  http://mapserver.gis.umn.edu/mapserver https://fastapi-dev.s-enda.k8s.met.no/mapserver/satellite-thredds/polar-swath/2022/05/17/noaa20-viirs-iband-20220517115900-20220517121313.nc?service=WMS&amp;version=1.3.0&amp;request=GetSchemaExtension">
+
+<!-- MapServer version 7.4.3 OUTPUT=PNG OUTPUT=JPEG OUTPUT=KML SUPPORTS=PROJ SUPPORTS=AGG SUPPORTS=FREETYPE SUPPORTS=CAIRO SUPPORTS=SVG_SYMBOLS SUPPORTS=RSVG SUPPORTS=ICONV SUPPORTS=FRIBIDI SUPPORTS=WMS_SERVER SUPPORTS=WMS_CLIENT SUPPORTS=WFS_SERVER SUPPORTS=WFS_CLIENT SUPPORTS=WCS_SERVER SUPPORTS=SOS_SERVER SUPPORTS=FASTCGI SUPPORTS=THREADS SUPPORTS=GEOS SUPPORTS=PBF INPUT=JPEG INPUT=POSTGIS INPUT=OGR INPUT=GDAL INPUT=SHAPEFILE -->
+
+<Service>
+  <Name>WMS</Name>
+  <Title>MET NORWAY OGC WMS server for datasets</Title>
+  <Abstract>OGC WMS for MET NORWAY datasets</Abstract>
+  <KeywordList>
+      <Keyword>Earth Science &gt; Atmosphere &gt; Atmospheric radiation</Keyword>
+      <Keyword>Government Agencies-non-US &gt; Norway &gt; NO/MET &gt; Norwegian Meteorological Institute</Keyword>
+      <Keyword>Geographic Region &gt; Northern Hemisphere</Keyword>
+      <Keyword>Meteorological geographical features</Keyword>
+      <Keyword>Atmospheric conditions</Keyword>
+      <Keyword>Oceanographic geographical features</Keyword>
+      <Keyword>Weather and climate</Keyword>
+  </KeywordList>
+  <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://fastapi-dev.s-enda.k8s.met.no/mapserver/satellite-thredds/polar-swath/2022/05/17/noaa20-viirs-iband-20220517115900-20220517121313.nc?"/>
+  <ContactInformation>
+    <ContactPersonPrimary>
+      <ContactPerson>Trygve Aspenes</ContactPerson>
+      <ContactOrganization>Norwegian Meteorological Institute</ContactOrganization>
+    </ContactPersonPrimary>
+      <ContactPosition>Senior engineer</ContactPosition>
+    <ContactAddress>
+        <AddressType>Street address</AddressType>
+        <Address>Henrik Mohns Plass 1</Address>
+        <City>OSLO</City>
+        <StateOrProvince>OSLO</StateOrProvince>
+        <PostCode>0371</PostCode>
+        <Country>NORWAY</Country>
+    </ContactAddress>
+      <ContactVoiceTelephone>+4722963000</ContactVoiceTelephone>
+  <ContactElectronicMailAddress>post@met.no</ContactElectronicMailAddress>
+  </ContactInformation>
+  <MaxWidth>4096</MaxWidth>
+  <MaxHeight>4096</MaxHeight>
+</Service>
+
+<Capability>
+  <Request>
+    <GetCapabilities>
+      <Format>text/xml</Format>
+      <DCPType>
+        <HTTP>
+          <Get><OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://fastapi-dev.s-enda.k8s.met.no/mapserver/satellite-thredds/polar-swath/2022/05/17/noaa20-viirs-iband-20220517115900-20220517121313.nc?"/></Get>
+          <Post><OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://fastapi-dev.s-enda.k8s.met.no/mapserver/satellite-thredds/polar-swath/2022/05/17/noaa20-viirs-iband-20220517115900-20220517121313.nc?"/></Post>
+        </HTTP>
+      </DCPType>
+    </GetCapabilities>
+    <GetMap>
+      <Format>image/tiff</Format>
+      <Format>image/png</Format>
+      <Format>image/jpeg</Format>
+      <Format>image/png; mode=8bit</Format>
+      <Format>image/vnd.jpeg-png</Format>
+      <Format>image/vnd.jpeg-png8</Format>
+      <Format>application/x-pdf</Format>
+      <Format>image/svg+xml</Format>
+      <Format>application/vnd.google-earth.kml+xml</Format>
+      <Format>application/vnd.google-earth.kmz</Format>
+      <Format>application/x-protobuf</Format>
+      <Format>application/json</Format>
+      <DCPType>
+        <HTTP>
+          <Get><OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://fastapi-dev.s-enda.k8s.met.no/mapserver/satellite-thredds/polar-swath/2022/05/17/noaa20-viirs-iband-20220517115900-20220517121313.nc?"/></Get>
+          <Post><OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://fastapi-dev.s-enda.k8s.met.no/mapserver/satellite-thredds/polar-swath/2022/05/17/noaa20-viirs-iband-20220517115900-20220517121313.nc?"/></Post>
+        </HTTP>
+      </DCPType>
+    </GetMap>
+    <GetFeatureInfo>
+      <Format>text/plain</Format>
+      <Format>application/vnd.ogc.gml</Format>
+      <DCPType>
+        <HTTP>
+          <Get><OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://fastapi-dev.s-enda.k8s.met.no/mapserver/satellite-thredds/polar-swath/2022/05/17/noaa20-viirs-iband-20220517115900-20220517121313.nc?"/></Get>
+          <Post><OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://fastapi-dev.s-enda.k8s.met.no/mapserver/satellite-thredds/polar-swath/2022/05/17/noaa20-viirs-iband-20220517115900-20220517121313.nc?"/></Post>
+        </HTTP>
+      </DCPType>
+    </GetFeatureInfo>
+    <sld:DescribeLayer>
+      <Format>text/xml</Format>
+      <DCPType>
+        <HTTP>
+          <Get><OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://fastapi-dev.s-enda.k8s.met.no/mapserver/satellite-thredds/polar-swath/2022/05/17/noaa20-viirs-iband-20220517115900-20220517121313.nc?"/></Get>
+          <Post><OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://fastapi-dev.s-enda.k8s.met.no/mapserver/satellite-thredds/polar-swath/2022/05/17/noaa20-viirs-iband-20220517115900-20220517121313.nc?"/></Post>
+        </HTTP>
+      </DCPType>
+    </sld:DescribeLayer>
+    <sld:GetLegendGraphic>
+      <Format>image/png</Format>
+      <Format>image/jpeg</Format>
+      <Format>image/png; mode=8bit</Format>
+      <Format>image/vnd.jpeg-png</Format>
+      <Format>image/vnd.jpeg-png8</Format>
+      <DCPType>
+        <HTTP>
+          <Get><OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://fastapi-dev.s-enda.k8s.met.no/mapserver/satellite-thredds/polar-swath/2022/05/17/noaa20-viirs-iband-20220517115900-20220517121313.nc?"/></Get>
+          <Post><OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://fastapi-dev.s-enda.k8s.met.no/mapserver/satellite-thredds/polar-swath/2022/05/17/noaa20-viirs-iband-20220517115900-20220517121313.nc?"/></Post>
+        </HTTP>
+      </DCPType>
+    </sld:GetLegendGraphic>
+    <ms:GetStyles>
+      <Format>text/xml</Format>
+      <DCPType>
+        <HTTP>
+          <Get><OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://fastapi-dev.s-enda.k8s.met.no/mapserver/satellite-thredds/polar-swath/2022/05/17/noaa20-viirs-iband-20220517115900-20220517121313.nc?"/></Get>
+          <Post><OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://fastapi-dev.s-enda.k8s.met.no/mapserver/satellite-thredds/polar-swath/2022/05/17/noaa20-viirs-iband-20220517115900-20220517121313.nc?"/></Post>
+        </HTTP>
+      </DCPType>
+    </ms:GetStyles>
+  </Request>
+  <Exception>
+    <Format>XML</Format>
+    <Format>INIMAGE</Format>
+    <Format>BLANK</Format>
+  </Exception>
+  <sld:UserDefinedSymbolization SupportSLD="1" UserLayer="0" UserStyle="1" RemoteWFS="0" InlineFeature="0" RemoteWCS="0"/>
+  <Layer>
+    <Name>MS</Name>
+    <Title>MET NORWAY OGC WMS server for datasets</Title>
+    <Abstract>OGC WMS for MET NORWAY datasets</Abstract>
+    <KeywordList>
+        <Keyword>Earth Science &gt; Atmosphere &gt; Atmospheric radiation</Keyword>
+        <Keyword>Government Agencies-non-US &gt; Norway &gt; NO/MET &gt; Norwegian Meteorological Institute</Keyword>
+        <Keyword>Geographic Region &gt; Northern Hemisphere</Keyword>
+        <Keyword>Meteorological geographical features</Keyword>
+        <Keyword>Atmospheric conditions</Keyword>
+        <Keyword>Oceanographic geographical features</Keyword>
+        <Keyword>Weather and climate</Keyword>
+    </KeywordList>
+    <CRS>EPSG:4326</CRS>
+    <CRS>EPSG:25833</CRS>
+    <CRS>EPSG:3857</CRS>
+    <CRS>EPSG:3575</CRS>
+    <CRS>EPSG:3034</CRS>
+    <CRS>EPSG:3035</CRS>
+    <EX_GeographicBoundingBox>
+        <westBoundLongitude>-180</westBoundLongitude>
+        <eastBoundLongitude>180</eastBoundLongitude>
+        <southBoundLatitude>-89.9</southBoundLatitude>
+        <northBoundLatitude>89.9</northBoundLatitude>
+    </EX_GeographicBoundingBox>
+    <BoundingBox CRS="EPSG:4326"
+                minx="-89.9" miny="-180" maxx="89.9" maxy="180" />
+    <Layer queryable="0" opaque="0" cascaded="0">
+        <Name>hr_overview</Name>
+        <Title>hr_overview</Title>
+        <EX_GeographicBoundingBox>
+            <westBoundLongitude>-1.61314e+06</westBoundLongitude>
+            <eastBoundLongitude>1.54512e+06</eastBoundLongitude>
+            <southBoundLatitude>3.96023e+06</southBoundLatitude>
+            <northBoundLatitude>9.75413e+06</northBoundLatitude>
+        </EX_GeographicBoundingBox>
+        <Dimension name="time" units="ISO8601" nearestValue="0">2022-05-17T11:59:00Z/2022-05-17T11:59:00Z</Dimension>
+        <MetadataURL type="TC211">
+          <Format>text/xml</Format>
+          <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:type="simple" xlink:href="https://fastapi-dev.s-enda.k8s.met.no/mapserver/satellite-thredds/polar-swath/2022/05/17/noaa20-viirs-iband-20220517115900-20220517121313.nc?request=GetMetadata&amp;layer=hr_overview"/>
+        </MetadataURL>
+    </Layer>
+    <Layer queryable="0" opaque="0" cascaded="0">
+        <Name>ir_window_channel</Name>
+        <Title>ir_window_channel</Title>
+        <EX_GeographicBoundingBox>
+            <westBoundLongitude>-1.61314e+06</westBoundLongitude>
+            <eastBoundLongitude>1.54512e+06</eastBoundLongitude>
+            <southBoundLatitude>3.96023e+06</southBoundLatitude>
+            <northBoundLatitude>9.75413e+06</northBoundLatitude>
+        </EX_GeographicBoundingBox>
+        <Dimension name="time" units="ISO8601" nearestValue="0">2022-05-17T11:59:00Z/2022-05-17T11:59:00Z</Dimension>
+        <MetadataURL type="TC211">
+          <Format>text/xml</Format>
+          <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:type="simple" xlink:href="https://fastapi-dev.s-enda.k8s.met.no/mapserver/satellite-thredds/polar-swath/2022/05/17/noaa20-viirs-iband-20220517115900-20220517121313.nc?request=GetMetadata&amp;layer=ir_window_channel"/>
+        </MetadataURL>
+    </Layer>
+  </Layer>
+</Capability>
+</WMS_Capabilities>

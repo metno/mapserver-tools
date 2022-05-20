@@ -21,10 +21,13 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import os
+import sys
+from time import strptime
 import yaml
 import jinja2
 import datetime
 import rasterio
+import requests
 import xml.etree.ElementTree as et
 
 
@@ -84,7 +87,22 @@ class edit_wms_mmd_xml_files():
 
         return metadata_identifier.text
 
-    def add_wms_to_mmd_xml(self, xroot, server_name, mapserver_data_dir, map_output_file, input_data_files, config):
+    def add_wms_to_mmd_xml(self, xroot, fast_api_netcdf_path, layers):
+        wms_data_access = et.SubElement(xroot, "mmd:data_access")
+        wms_data_access_type = et.SubElement(wms_data_access, "mmd:type")
+        wms_data_access_type.text = "OGC WMS"
+        wms_data_access_description = et.SubElement(wms_data_access, "mmd:description")
+        wms_data_access_description.text = "OGC Web Mapping Service, URI to GetCapabilities Document."
+        wms_data_access_resource = et.SubElement(wms_data_access, "mmd:resource")
+        get_capabilites = 'service=WMS&version=1.3.0&request=GetCapabilities'
+        wms_data_access_resource.text = f"{fast_api_netcdf_path}?{get_capabilites}"
+        wms_data_access_layers = et.SubElement(wms_data_access, 'mmd:wms_layers')
+
+        for layer in layers:
+            wms_data_access_layer = et.SubElement(wms_data_access_layers, 'mmd:wms_layer')
+            wms_data_access_layer.text = layer
+
+    def add_wms_to_mmd_xml_old(self, xroot, server_name, mapserver_data_dir, map_output_file, input_data_files, config):
         wms_data_access = et.SubElement(xroot, "mmd:data_access")
         wms_data_access_type = et.SubElement(wms_data_access, "mmd:type")
         wms_data_access_type.text = "OGC WMS"
@@ -107,6 +125,22 @@ class edit_wms_mmd_xml_files():
     def rewrite_mmd_xml(self, xtree, input_mmd_xml_file):
         xtree.write(os.path.basename(input_mmd_xml_file), encoding='UTF-8')
 
+    def read_layers_from_getcapabilities(self, resource):
+        "Read and parse layer names from getcapabilities document"
+       
+        gcd = requests.get(resource).text
+        xtree = et.fromstring(gcd)
+        layers = []
+        for layer in xtree.findall(".//{http://www.opengis.net/wms}Capability/{http://www.opengis.net/wms}Layer/{http://www.opengis.net/wms}Layer/{http://www.opengis.net/wms}Name"):
+            layers.append(layer.text)
+        return layers
+
+    def generate_uri(self, mmd_xml_file):
+        bn, _ = os.path.splitext(os.path.basename(mmd_xml_file))
+        basename = bn.split('-')
+        start_time = datetime.datetime.strptime(basename[-2],'%Y%m%d%H%M%S')
+        netcdf_path = f'satellite-thredds/polar-swath/{start_time:%Y/%m/%d}/{bn}.nc'
+        return bn, netcdf_path
 
 class generate_mapserver_map_file():
     def get_geotiff_timestamp(self, geotiff_file):
@@ -152,3 +186,30 @@ class generate_mapserver_map_file():
     def write_map_file(self, map_file_output_dir, map_output_file, template, data):
         with open(os.path.join(map_file_output_dir, map_output_file), 'w') as fh:
             fh.write(template.render(data=data))
+
+def main():
+    ns = {'mmd': 'http://www.met.no/schema/mmd',
+          'gml': 'http://www.opengis.net/gml'}
+    ewmxf = edit_wms_mmd_xml_files()
+    mmd_xml_file = sys.argv[1]
+    fast_api = 'https://fastapi-dev.s-enda.k8s.met.no/api/get_mapserv'
+    try:
+        fast_api = sys.argv[2]
+    except IndexError:
+        pass
+    bn, netcdf_path = ewmxf.generate_uri(mmd_xml_file)
+    xtree = ewmxf.open_mmd_xml_file(mmd_xml_file, ns)
+    xroot = xtree.getroot()
+    ewmxf.remove_wms_from_mmd_xml(xroot, ns)
+    layers_dict = {'iband': ['hr_overview', 'ir_window_channel'],
+                   'dnb': ['adaptive_dnb']}
+    layers = ['overview', 'ir_window_channel']
+    for layer in layers_dict:
+        if layer in bn:
+            layers = layers_dict[layer]
+            break
+    ewmxf.add_wms_to_mmd_xml(xroot, os.path.join(fast_api, netcdf_path), layers)
+    ewmxf.rewrite_mmd_xml(xtree, f'../{mmd_xml_file}')
+
+if __name__ == '__main__':
+    main()
