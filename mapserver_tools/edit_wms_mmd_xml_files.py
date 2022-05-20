@@ -22,7 +22,6 @@
 
 import os
 import sys
-from time import strptime
 import yaml
 import jinja2
 import datetime
@@ -127,20 +126,22 @@ class edit_wms_mmd_xml_files():
 
     def read_layers_from_getcapabilities(self, resource):
         "Read and parse layer names from getcapabilities document"
-       
+
         gcd = requests.get(resource).text
         xtree = et.fromstring(gcd)
         layers = []
-        for layer in xtree.findall(".//{http://www.opengis.net/wms}Capability/{http://www.opengis.net/wms}Layer/{http://www.opengis.net/wms}Layer/{http://www.opengis.net/wms}Name"):
+        for layer in xtree.findall(".//{http://www.opengis.net/wms}Capability/{http://www.opengis.net/wms}Layer/"
+                                   "{http://www.opengis.net/wms}Layer/{http://www.opengis.net/wms}Name"):
             layers.append(layer.text)
         return layers
 
     def generate_uri(self, mmd_xml_file):
         bn, _ = os.path.splitext(os.path.basename(mmd_xml_file))
         basename = bn.split('-')
-        start_time = datetime.datetime.strptime(basename[-2],'%Y%m%d%H%M%S')
+        start_time = datetime.datetime.strptime(basename[-2], '%Y%m%d%H%M%S')
         netcdf_path = f'satellite-thredds/polar-swath/{start_time:%Y/%m/%d}/{bn}.nc'
         return bn, netcdf_path
+
 
 class generate_mapserver_map_file():
     def get_geotiff_timestamp(self, geotiff_file):
@@ -187,6 +188,7 @@ class generate_mapserver_map_file():
         with open(os.path.join(map_file_output_dir, map_output_file), 'w') as fh:
             fh.write(template.render(data=data))
 
+
 def main():
     ns = {'mmd': 'http://www.met.no/schema/mmd',
           'gml': 'http://www.opengis.net/gml'}
@@ -210,6 +212,7 @@ def main():
             break
     ewmxf.add_wms_to_mmd_xml(xroot, os.path.join(fast_api, netcdf_path), layers)
     ewmxf.rewrite_mmd_xml(xtree, f'../{mmd_xml_file}')
+
 
 if __name__ == '__main__':
     main()

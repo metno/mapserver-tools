@@ -165,7 +165,7 @@ def test_add_wms_to_mmd_xml_old():
     xroot = xtree.getroot()
     ewmxf.remove_wms_from_mmd_xml(xroot, ns)
     ewmxf.add_wms_to_mmd_xml_old(xroot, server_name, mapserver_data_dir,
-                             map_output_file, input_data_files, config)
+                                 map_output_file, input_data_files, config)
     ewmxf.rewrite_mmd_xml(xtree, 'test-out.xml')
 
     xtree = ewmxf.open_mmd_xml_file('test-out.xml', ns)
@@ -191,7 +191,7 @@ def test_add_wms_to_mmd_xml():
     fast_api = 'https://fastapi-dev.s-enda.k8s.met.no/api/get_mapserv'
     bn, _ = os.path.splitext(os.path.basename(input_mmd_xml_file))
     basename = bn.split('-')
-    start_time = datetime.datetime.strptime(basename[-2],'%Y%m%d%H%M%S')
+    start_time = datetime.datetime.strptime(basename[-2], '%Y%m%d%H%M%S')
     netcdf_path = f'satellite-thredds/polar-swath/{start_time:%Y/%m/%d}/{bn}.nc'
     fast_api_netcdf_path = os.path.join(fast_api, netcdf_path)
     ewmxf = edit_wms_mmd_xml_files()
@@ -218,13 +218,15 @@ def test_add_wms_to_mmd_xml():
 
     os.remove('test-out.xml')
 
+
 def test_generate_uri():
     from mapserver_tools.edit_wms_mmd_xml_files import edit_wms_mmd_xml_files
     input_mmd_xml_file = 'mapserver_tools/tests/testdata/noaa19-avhrr-20210901070230-20210901071648.xml'
     ewmxf = edit_wms_mmd_xml_files()
     bn, netcdf_path = ewmxf.generate_uri(input_mmd_xml_file)
     assert bn == 'noaa19-avhrr-20210901070230-20210901071648'
-    assert netcdf_path == 'satellite-thredds/polar-swath/2021/09/01/noaa19-avhrr-20210901070230-20210901071648.nc'    
+    assert netcdf_path == 'satellite-thredds/polar-swath/2021/09/01/noaa19-avhrr-20210901070230-20210901071648.nc'
+
 
 def test_load_template():
     import jinja2
@@ -292,6 +294,7 @@ def test_write_map_file():
     assert os.path.exists(os.path.join(map_file_output_dir, map_output_file)) is True
     os.remove(os.path.join(map_file_output_dir, map_output_file))
 
+
 # This method will be used by the mock to replace requests.get
 def mocked_requests_get(*args, **kwargs):
     class MockResponse:
@@ -304,8 +307,10 @@ def mocked_requests_get(*args, **kwargs):
     if args[0] == 'https://some-host/?request=getcapabilities':
         return MockResponse(getcapabilitites_test, 200)
 
+
 def test_read_layers_from_getcapabilities(mocker):
     from mapserver_tools.edit_wms_mmd_xml_files import edit_wms_mmd_xml_files
     mocker.patch('requests.get', side_effect=mocked_requests_get)
     ewmxf = edit_wms_mmd_xml_files()
-    assert ewmxf.read_layers_from_getcapabilities('https://some-host/?request=getcapabilities') == ['hr_overview', 'ir_window_channel']
+    layers = ['hr_overview', 'ir_window_channel']
+    assert ewmxf.read_layers_from_getcapabilities('https://some-host/?request=getcapabilities') == layers
