@@ -189,7 +189,7 @@ class generate_mapserver_map_file():
             fh.write(template.render(data=data))
 
 
-def main(): # pragma: no cover
+def main():  # pragma: no cover
     ns = {'mmd': 'http://www.met.no/schema/mmd',
           'gml': 'http://www.opengis.net/gml'}
     ewmxf = edit_wms_mmd_xml_files()
@@ -197,7 +197,7 @@ def main(): # pragma: no cover
     try:
         mmd_xml_file = sys.argv[1]
     except IndexError:
-        pass        
+        pass
     fast_api = 'https://fastapi-dev.s-enda.k8s.met.no/api/get_mapserv'
     try:
         fast_api = sys.argv[2]
@@ -218,5 +218,5 @@ def main(): # pragma: no cover
     ewmxf.rewrite_mmd_xml(xtree, f'../{mmd_xml_file}')
 
 
-if __name__ == '__main__': # pragma: no cover
+if __name__ == '__main__':  # pragma: no cover
     main()
