@@ -1,5 +1,6 @@
-#!/usr/bin/python
-# Copyright (c) 2021.
+#!/usr/bin/env python
+
+# Copyright (c) 2021, 2022
 #
 
 # Author(s):
@@ -22,23 +23,7 @@
 """Setup for mapserver tools
 """
 
-from setuptools import setup
+import setuptools
 
-setup(name="mapserver-tools",
-      version="0.1.0",
-      description='mapserver tools',
-      author='Trygve Aspenes',
-      author_email='trygveas@met.no',
-      classifiers=["Development Status :: 4 - Beta",
-                   "Intended Audience :: Science/Research",
-                   "License :: OSI Approved :: GNU General Public License v3 "
-                   "or later (GPLv3+)",
-                   "Operating System :: OS Independent",
-                   "Programming Language :: Python",
-                   "Topic :: Scientific/Engineering"],
-      url="git@gitlab.met.no:s-enda/mapserver-tools.git",
-      scripts=['scripts/py-mmd-edit-resource.py'],
-      data_files=[],
-      packages=[],
-      zip_safe=False,
-      install_requires=['jinja2', 'rasterio', 'requests'])
+if __name__ == "__main__":
+    setuptools.setup()

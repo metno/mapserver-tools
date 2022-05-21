@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-# Copyright (c) 2021 Trygve Aspenes
+# Copyright (c) 2021, 2022 Trygve Aspenes
 
 # Author(s):
 
@@ -19,3 +19,6 @@
 
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+__package__ = "mapserver_tools"
+__version__ = "0.2"
