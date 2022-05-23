@@ -21,4 +21,4 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 __package__ = "mapserver_tools"
-__version__ = "0.2"
+__version__ = "0.3"
