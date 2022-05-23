@@ -122,7 +122,7 @@ class edit_wms_mmd_xml_files():
             wms_data_access_layer.text = layer_config['name']
 
     def rewrite_mmd_xml(self, xtree, input_mmd_xml_file):
-        xtree.write(os.path.basename(input_mmd_xml_file), encoding='UTF-8')
+        xtree.write(input_mmd_xml_file, encoding='UTF-8')
 
     def read_layers_from_getcapabilities(self, resource):
         "Read and parse layer names from getcapabilities document"
