@@ -4,10 +4,8 @@ stages:
   
 .source-repo:
   variables:
-    CONTEXT: repo/containers/mapserver
+    CONTEXT: containers/mapserver
     BASE_IMAGE: registry.met.no/baseimg/ubuntu:20.04
-  before_script:
-    - git clone --depth 1 --branch main https://github.com/metno/mapserver-tools repo
 
 build container:
   extends: .source-repo
